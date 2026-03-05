@@ -25,6 +25,8 @@
 \usepackage{siunitx}
 \usepackage[colorlinks]{hyperref}
 \usepackage{fancyhdr}
+\usepackage{graphicx}
+\graphicspath{ {./figs/} }
 \usepackage[
   backend=biber,
   sorting=none,
@@ -122,7 +124,7 @@
 \newmdenv[
   linewidth=0.5pt,
   linecolor=white,
-  backgroundcolor=black!70,
+  backgroundcolor=black!80,
   fontcolor=white!90,
   roundcorner=3pt,
   leftmargin=0pt,
@@ -251,11 +253,15 @@
 
 
 \part{\textit{Physics of Binary Star Evolution} Notes \cite{TaurisvandenHeuvel+2023}}
-\input{subTex/physicsOfBinaryStarEvoNotes.tex}
+\input{physicsOfBinaryStarEvo/input.tex}
+
+
+\part{AstroBites Notes}
+\input{astroBitesNotes/astroBiteInput.tex}
 
 \printbibliography[
 heading=bibintoc,
-title={\centering Used Papers}
+title={\centering Sources}
 ]
 
 \printglossaries

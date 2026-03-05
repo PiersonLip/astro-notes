@@ -1,0 +1,42 @@
+\pagebreak
+\chapter{What happens when you poke a black hole? \cite{Mittal2026} \label{chap:PokeABH}}
+\hrule
+\vspace{.5cm}
+
+\section{Abstract and intro}
+\hrule
+\vspace{.5cm}
+What happens when you perturb the perfect shape of a blackhole (or any other object of symmetrically and spherically distorting spacetime)?
+
+In 1950 John Wheeler and Tullio Regge were studying spherically symmetric spacetimes outside spherical masses. Note that this was being done \textit{before} BHs were known.  
+
+\section{How do you poke a BH?}
+\hrule
+\vspace{.5cm}
+
+To `poke` a BH One can disturb the shape of its spacetime. Regge and Wheeler did this by utilizing spherical harmonics. They used two types of perturbations, \gls{odd_modes} and \gls{even_modes}. Even those these don't necessarily completely represent real physical distortions in spacetime, this simplified version became the Regge-Wheeler gauge, which serves as a modern benchmark for how these calculations are done.
+
+\section{The Regge-Wheeler Equation}
+\hrule
+\vspace{.5cm}
+
+\begin{eqboxed}{eq:ReggeWheeler}{Regge-Wheeler Equation}
+{Q measures the size of a perturbation, \(r^*\) is the Turtle Coordinate \ref{eq:turtleCoordinate}, \(\omega\) is the frequency of the perturbation, and \(V_{RW}\) is an effective potential for the BHs sensitivity to perturbations. \textit{Note that this is for \gls{odd_modes}!!}}
+\frac{d^2}{dr^{*2}} + \left[\omega^2 V_{RW} (r)\right]Q = 0
+\end{eqboxed}
+
+\begin{eqboxed}{eq:turtleCoordinate}{Turtle Coordinate}
+{Because the Schwarzschild time coordinate approaches infinity as something (a light ray, observer, object, etc.) approaches the event horizon, it is useful to have a coordinate which approaches negative infinity in order to still allow for calculations}
+r^* = r + 2GM \ln\left|\frac{r}{2GM}-1\right|
+\end{eqboxed}
+
+This equation (\ref{eq:ReggeWheeler}) looks very similar to the Schrödinger equation, allowing predictions of its behavior to be easily made. Because of this, it is easily predicted that the system will oscillate and then return to a low energy state. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=.75\textwidth]{bhPertubation.png}
+\end{figure}
+
+The `ring-down' phase detected with LIGO after a BH merger is described using this same method.
+
+

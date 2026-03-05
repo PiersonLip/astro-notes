@@ -18,3 +18,10 @@ HeS
 Wolf-Rayet
 subdwarf
 accretor
+AstroBites
+blackhole
+Regge
+Tullio
+Regge-Wheeler
+Schwarzschild
+HSEq
