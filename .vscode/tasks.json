@@ -34,7 +34,7 @@
     {
       "id": "paperFolder",
       "type": "promptString",
-      "description": "Folder under paperNotes/ (optional)",
+      "description": "Folder under paperNotes/ (optional — defaults from cite key)",
       "placeholder": "greenUpper"
     },
     {
@@ -77,6 +77,26 @@
       },
       "presentation": {
         "reveal": "silent",
+        "panel": "shared",
+        "focus": false,
+        "close": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "New Paper Note (from Zotero)",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/new-paper-from-zotero.sh",
+      "args": [
+        "${input:paperTitle}",
+        "${input:paperFolder}",
+        "${input:paperDoi}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
         "panel": "shared",
         "focus": false,
         "close": true
@@ -136,6 +156,26 @@
         "focus": false
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Build Paper Subfile",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/build-paper-subfile.sh",
+      "args": ["${relativeFile}"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": false
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": [
+        "$latex"
+      ]
     },
     {
       "label": "Build mainNotes (latexmk)",

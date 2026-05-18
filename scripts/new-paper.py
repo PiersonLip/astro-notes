@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create a new paper note under paperNotes/, register in paperNotes.tex, optional bib entry."""
+"""Create a new paper note under paperNotes/, register in paperIncludes.tex, optional bib entry."""
 
 from __future__ import annotations
 
@@ -11,18 +11,21 @@ import urllib.error
 import urllib.request
 from pathlib import Path
 
+from bib_utils import title_for_key
 from note_utils import (
     append_bib_block,
     cite_key_in_any,
+    cite_key_to_folder,
     latex_escape,
     open_in_editor,
     register_input_line,
     title_to_basename,
 )
+from zotero_bbt import selected_citekey_and_title
 
 ROOT = Path(__file__).resolve().parent.parent
 PAPER_ROOT = ROOT / "paperNotes"
-INPUT_FILE = ROOT / "paperNotes" / "paperNotes.tex"
+INPUT_FILE = ROOT / "paperNotes" / "paperIncludes.tex"
 ZOTERO_BIB = ROOT / "AstroNotes.bib"
 MANUAL_BIB = ROOT / "sources.bib"
 BIB_LOOKUP = [ZOTERO_BIB, MANUAL_BIB]
@@ -146,7 +149,6 @@ def resolve_bib(
     if found_in:
         return None, f"Bib: @{cite_key} found in {found_in.name}"
 
-    # Allow arXiv URL/ID in the DOI field from the VS Code prompt
     if doi and not arxiv:
         aid = parse_arxiv_id(doi)
         if aid:
@@ -188,7 +190,10 @@ def resolve_bib(
 
 def write_paper_tex(path: Path, title: str, cite_key: str) -> None:
     safe_title = latex_escape(title)
-    content = f"""\\pagebreak
+    content = f"""\\documentclass[../../mainNotes.tex]{{subfiles}}
+\\begin{{document}}
+
+\\pagebreak
 \\chapter{{{safe_title} \\cite{{{cite_key}}}}}
 \\hrule
 \\vspace{{.5cm}}
@@ -200,20 +205,42 @@ def write_paper_tex(path: Path, title: str, cite_key: str) -> None:
 \\begin{{list}}{{-}}{{}}
 \\item 
 \\end{{list}}
+
+\\end{{document}}
 """
     path.write_text(content, encoding="utf-8")
+
+
+def fill_from_zotero(title_override: str) -> tuple[str, str] | None:
+    picked = selected_citekey_and_title()
+    if not picked:
+        return None
+    cite_key, title = picked
+    if title_override.strip():
+        title = title_override.strip()
+    return cite_key, title
 
 
 def main() -> int:
     parser = argparse.ArgumentParser(
         description="Create a new paper note (chapter + cite, paperNotes/ layout)."
     )
-    parser.add_argument("title", help="Paper title (for chapter heading)")
-    parser.add_argument("cite_key", help="BibTeX citation key (e.g. from Zotero)")
+    parser.add_argument(
+        "title",
+        nargs="?",
+        default="",
+        help="Paper title (for chapter heading); optional with --from-zotero",
+    )
+    parser.add_argument(
+        "cite_key",
+        nargs="?",
+        default="",
+        help="BibTeX citation key (e.g. from Zotero)",
+    )
     parser.add_argument(
         "--folder",
         default="",
-        help="Subfolder under paperNotes/ (default: derived from title)",
+        help="Subfolder under paperNotes/ (default: from cite key, else title)",
     )
     parser.add_argument(
         "--tex",
@@ -230,16 +257,38 @@ def main() -> int:
         default="",
         help="arXiv ID or URL (optional fallback for bib)",
     )
+    parser.add_argument(
+        "--from-zotero",
+        action="store_true",
+        help="Use the selected Zotero item (Better BibTeX JSON-RPC) for cite key and title",
+    )
     args = parser.parse_args()
 
     title = args.title.strip()
     cite_key = args.cite_key.strip()
-    folder = args.folder.strip() or title_to_basename(title)
-    tex_name = args.tex.strip() or f"{folder}Notes.tex"
 
-    if not title or not cite_key:
+    if args.from_zotero:
+        filled = fill_from_zotero(title)
+        if not filled:
+            print(
+                "Could not read Zotero selection (is Zotero running with one item selected?)",
+                file=sys.stderr,
+            )
+            return 1
+        cite_key, zotero_title = filled
+        if not title:
+            title = zotero_title
+
+    if not cite_key and not args.from_zotero:
         parser.print_help()
         return 1
+
+    if not title:
+        title = title_for_key(cite_key, BIB_LOOKUP) or cite_key
+
+    folder = args.folder.strip() or cite_key_to_folder(cite_key) or title_to_basename(title)
+    tex_name = args.tex.strip() or f"{folder}Notes.tex"
+
     if not folder:
         print("Could not derive folder name.", file=sys.stderr)
         return 1
@@ -248,7 +297,8 @@ def main() -> int:
 
     note_dir = PAPER_ROOT / folder
     tex_file = note_dir / tex_name
-    input_line = f"\\input{{paperNotes/{folder}/{tex_name}}}"
+    stem = tex_name[:-4] if tex_name.endswith(".tex") else tex_name
+    input_line = f"\\subfile{{paperNotes/{folder}/{stem}}}"
 
     if tex_file.exists():
         print(f"Already exists: {tex_file}", file=sys.stderr)
@@ -261,7 +311,9 @@ def main() -> int:
     _, bib_note = resolve_bib(cite_key, args.doi, args.arxiv)
 
     print(f"Created: {tex_file}")
-    print(f"Added to: paperNotes/paperNotes.tex")
+    print(f"Added to: paperNotes/paperIncludes.tex")
+    print(f"Cite key: {cite_key}")
+    print(f"Folder: {folder}")
     print(bib_note)
 
     open_in_editor(tex_file)

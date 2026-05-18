@@ -21,18 +21,23 @@ Use **Zotero/BBT cite keys** for new paper notes (e.g. `soamPhotoevaporationDust
 | Script / task | Hotkey (in `astro-notes` workspace) | What it does |
 |---------------|-------------------------------------|--------------|
 | `scripts/new-astrobite.sh` | `Ctrl+Shift+A` | Astrobites `.tex` in `astroBitesNotes/notes/`, optional bib in `sources.bib`, updates `astroBiteInput.tex` |
-| `scripts/new-paper.sh` | `Ctrl+Shift+Alt+P` | Paper note under `paperNotes/<folder>/`, updates `paperNotes.tex`; checks **`AstroNotes.bib` first**, then `sources.bib` |
+| `scripts/new-paper.sh` | `Ctrl+Shift+Alt+P` | Paper note under `paperNotes/<folder>/`, updates `paperIncludes.tex`; checks **`AstroNotes.bib` first**, then `sources.bib` |
+| `scripts/new-paper-from-zotero.sh` | (task: **New Paper Note (from Zotero)**) | Same, but cite key + title from Zotero selection (BBT JSON-RPC at `localhost:23119`) |
 | `scripts/new-glossary.sh` | `Ctrl+Shift+G` | Add `\newglossaryentry` to `subTex/Astro-glossary.tex`, then sort A–Z |
 | `scripts/sort-glossary.sh` | (auto) | Sort glossary entries by key |
 
 VS Code tasks: **New Astrobite Note**, **New Paper Note**, **New Glossary Entry**, **Sort Glossary**, **Build mainNotes (latexmk)** (`Tasks: Run Task`).
 
-Paper task args: title, cite key, optional folder, optional DOI — empty folder/DOI are safe (wrapper omits empty flags).
+Paper task args: title, cite key, optional folder, optional DOI — empty folder/DOI are safe (wrapper omits empty flags). Default **folder** is derived from cite key (e.g. `greenUpperLimitFrequency2025` → `greenUpper`), not the full title.
+
+**Zotero paper task:** select one item in Zotero, run **New Paper Note (from Zotero)**; optional title overrides Zotero title. Requires Zotero running with Better BibTeX.
+
+**Paper subfiles:** each chapter is a `subfiles` child of `mainNotes.tex`. Compile one chapter alone: open its `.tex` and run **Build Paper Subfile** (or `latexmk -pdf -shell-escape` on that file) for synctex without rebuilding the whole book.
 
 ## Layout conventions
 
 - **Astrobites:** `\chapter{Title \cite{key} \label{chap:...}}`, section “Abstract and intro”, bullet list.
-- **Papers:** `\chapter{Title \cite{key}}`, `\section{Abstract}`, bullet list; folder defaults from title (camelCase, small words lowercased).
+- **Papers:** `\documentclass[../../mainNotes.tex]{subfiles}` wrapper; `\chapter{Title \cite{key}}`, `\section{Abstract}`, bullet list; folder defaults from cite key (override in prompt).
 
 ## Glossary (`subTex/Astro-glossary.tex`)
 

@@ -10,6 +10,28 @@ SMALL_WORDS = {"a", "an", "the", "of", "in", "on", "at", "to", "for", "and", "or
 BIB_KEY = re.compile(r"@\w+\{([^,]+),")
 
 
+def cite_key_to_folder(cite_key: str) -> str:
+    """Short paperNotes folder name from a BBT cite key (author + topic hint)."""
+    stem = re.sub(r"\d{4}[a-z]?$", "", cite_key.strip())
+    if not stem:
+        return cite_key[:30]
+
+    if "-" in stem:
+        head, tail = stem.split("-", 1)
+        words = re.findall(r"[A-Z][a-z]+|[a-z]+", tail)
+        if words:
+            return head + words[0].capitalize()
+        return head[:30]
+
+    parts = re.findall(r"[A-Z]?[a-z]+|[A-Z]+(?=[A-Z][a-z])|[A-Z]+", stem)
+    if len(parts) >= 2:
+        first, second = parts[0], parts[1]
+        if first.islower():
+            return first + second.capitalize()
+        return first + second
+    return stem[:30]
+
+
 def title_to_basename(title: str) -> str:
     words = re.findall(r"[A-Za-z0-9]+", title)
     parts: list[str] = []
