@@ -1,0 +1,46 @@
+---
+description: Astro-notes LaTeX conventions, bib split, glossary prefixes, note hotkeys
+globs:
+  - "**/*"
+alwaysApply: true
+---
+
+# astro-notes
+
+## Bibliography
+
+- **`AstroNotes.bib`** — Zotero Better BibTeX auto-export; do not edit by hand.
+- **`sources.bib`** — Manual entries (Astrobites `Amen2026`, books, etc.). Astrobites stay here; Zotero often lacks Astrobites author metadata.
+- **`mainNotes.tex`** loads both via `\addbibresource`.
+- Use **Zotero/BBT cite keys** in paper notes (e.g. `greenUpperLimitFrequency2025`), not legacy `sources.bib` keys.
+
+## Note scripts & hotkeys (workspace `astro-notes`)
+
+| Task / script | Hotkey | Output |
+|---------------|--------|--------|
+| New Astrobite | `Ctrl+Shift+A` | `astroBitesNotes/notes/`, `sources.bib` if needed |
+| New Paper | `Ctrl+Shift+Alt+P` | `paperNotes/<folder>/`, registers in `paperIncludes.tex` |
+| New Paper (Zotero) | task only | Select item in Zotero → cite key + title from BBT JSON-RPC |
+| New Glossary | `Ctrl+Shift+G` | `subTex/Astro-glossary.tex`, auto-sorted |
+
+Paper folder default: derived from cite key (`greenUpperLimitFrequency2025` → `greenUpper`), override in prompt if needed.
+
+## Layout
+
+- **Papers:** `\documentclass[../../mainNotes.tex]{subfiles}` wrapper; `\chapter{Title \cite{key}}`, `\section{Abstract}`, bullet list. Main doc uses `\subfile{paperNotes/...}` via `paperNotes/paperIncludes.tex`.
+- **Standalone paper build:** `latexmk -pdf -shell-escape` on the chapter `.tex`, or task **Build Paper Subfile**.
+- **Astrobites:** `\chapter{Title \cite{key} \label{chap:...}}`, section “Abstract and intro”.
+
+## Glossary (`subTex/Astro-glossary.tex`)
+
+- **Acronyms:** `ac:` prefix (`ac:GW`, `ac:TESS`).
+- **Observatories:** `obs:` prefix (`obs:Pan-STARRS`).
+- **Full terms:** no prefix (`chandrasekhar-limit`, `kilonova`).
+- In text: `\gls{key}`. Sort: task **Sort Glossary** or after new entry.
+
+## Build
+
+- Full doc: `latexmk -pdf -shell-escape mainNotes.tex` (tikz externalization, biblatex/biber).
+- Use **global** LaTeX Workshop settings; no workspace `settings.json` override here.
+
+More detail: `memory.md`.
