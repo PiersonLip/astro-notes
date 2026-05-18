@@ -1,3 +1,5 @@
+__pycache__/
+*.pyc
 Thomas M. Tauris, Edward P.J. van den Heuvel - Physics of Binary Star Evolution-Princeton University Press (2023).pdf
 *.gz
 *.aux

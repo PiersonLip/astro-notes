@@ -1,0 +1,88 @@
+{
+  "version": "2.0.0",
+  "inputs": [
+    {
+      "id": "astrobiteTitle",
+      "type": "promptString",
+      "description": "Astrobites article title",
+      "placeholder": "Many Mergers Might Fill the Mass Gap"
+    },
+    {
+      "id": "astrobiteUrl",
+      "type": "promptString",
+      "description": "Astrobites URL",
+      "placeholder": "https://astrobites.org/2026/05/09/many-mergers-might-fill-mass-gap/"
+    },
+    {
+      "id": "astrobiteAuthor",
+      "type": "promptString",
+      "description": "Author (optional — leave blank to fetch from page)",
+      "placeholder": "Akshita Mittal"
+    },
+    {
+      "id": "paperTitle",
+      "type": "promptString",
+      "description": "Paper title",
+      "placeholder": "An upper limit on the frequency of short-period black hole companions to Sun-like stars"
+    },
+    {
+      "id": "paperCiteKey",
+      "type": "promptString",
+      "description": "BibTeX cite key (from Zotero / AstroNotes.bib)",
+      "placeholder": "greenUpperLimitFrequency2025"
+    },
+    {
+      "id": "paperFolder",
+      "type": "promptString",
+      "description": "Folder under paperNotes/ (optional)",
+      "placeholder": "greenUpper"
+    },
+    {
+      "id": "paperDoi",
+      "type": "promptString",
+      "description": "DOI or arXiv URL (optional — fetches bib if key missing)",
+      "placeholder": "10.1051/0004-6361/202453271"
+    }
+  ],
+  "tasks": [
+    {
+      "label": "New Astrobite Note",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/new-astrobite.sh",
+      "args": [
+        "${input:astrobiteTitle}",
+        "${input:astrobiteUrl}",
+        "${input:astrobiteAuthor}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "New Paper Note",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/new-paper.sh",
+      "args": [
+        "${input:paperTitle}",
+        "${input:paperCiteKey}",
+        "${input:paperFolder}",
+        "${input:paperDoi}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": false
+      },
+      "problemMatcher": []
+    }
+  ]
+}
