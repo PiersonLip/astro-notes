@@ -22,8 +22,10 @@ Use **Zotero/BBT cite keys** for new paper notes (e.g. `soamPhotoevaporationDust
 |---------------|-------------------------------------|--------------|
 | `scripts/new-astrobite.sh` | `Ctrl+Shift+A` | Astrobites `.tex` in `astroBitesNotes/notes/`, optional bib in `sources.bib`, updates `astroBiteInput.tex` |
 | `scripts/new-paper.sh` | `Ctrl+Shift+Alt+P` | Paper note under `paperNotes/<folder>/`, updates `paperNotes.tex`; checks **`AstroNotes.bib` first**, then `sources.bib` |
+| `scripts/new-glossary.sh` | `Ctrl+Shift+G` | Add `\newglossaryentry` to `subTex/Astro-glossary.tex`, then sort A–Z |
+| `scripts/sort-glossary.sh` | (auto) | Sort glossary entries by key |
 
-VS Code tasks: **New Astrobite Note**, **New Paper Note** (`Tasks: Run Task`).
+VS Code tasks: **New Astrobite Note**, **New Paper Note**, **New Glossary Entry**, **Sort Glossary**, **Build mainNotes (latexmk)** (`Tasks: Run Task`).
 
 Paper task args: title, cite key, optional folder, optional DOI — empty folder/DOI are safe (wrapper omits empty flags).
 
@@ -32,9 +34,37 @@ Paper task args: title, cite key, optional folder, optional DOI — empty folder
 - **Astrobites:** `\chapter{Title \cite{key} \label{chap:...}}`, section “Abstract and intro”, bullet list.
 - **Papers:** `\chapter{Title \cite{key}}`, `\section{Abstract}`, bullet list; folder defaults from title (camelCase, small words lowercased).
 
+## Glossary (`subTex/Astro-glossary.tex`)
+
+Loaded via `\loadglsentries{subTex/Astro-glossary}` in `mainNotes.tex`.
+
+**New entry** (matches `glossaryEntry` snippet):
+
+```latex
+\newglossaryentry{key}{
+name={Display Name},
+description={...}
+}
+```
+
+- **Task / `Ctrl+Shift+G`:** prompts for key (optional), name, description. Use `\\` in description for line breaks.
+- **Snippet:** `glossaryEntry` in workspace or global `Snippets.code-snippets`.
+- **In notes:** `\gls{key}`.
+
+**Auto-sort A–Z by key** runs when:
+
+1. After **New Glossary Entry** (always)
+2. Manually: task **Sort Glossary** or `python3 scripts/sort-glossary.py`
+
+LaTeX Workshop uses **global user settings** (no workspace override). Build recipe should be **latexmk (pdf)** (`-pdf -shell-escape`) for tikz externalization and biblatex.
+
+Prefix **acronyms** with `ac:` and **observatories** with `obs:` (e.g. `ac:GW`, `ac:TESS`, `obs:Pan-STARRS`). Full terms stay unprefixed (`chandrasekhar-limit`, `kilonova`).
+
 ## Keybindings files
 
 - `~/.config/Code/User/keybindings.json`
 - `~/.config/Cursor/User/keybindings.json`
 
 Do not bind both Astrobites and papers to the same key.
+
+Keybinding `when` clause uses `resourcePath =~ /astro-notes/` (not `workspaceFolderBasename`) so shortcuts work when any file under the repo is open, even if the workspace root is a parent folder.

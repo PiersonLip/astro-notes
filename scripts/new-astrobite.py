@@ -5,12 +5,13 @@ from __future__ import annotations
 
 import argparse
 import re
-import subprocess
 import sys
 import urllib.error
 import urllib.request
 from datetime import date
 from pathlib import Path
+
+from note_utils import open_in_editor
 
 ROOT = Path(__file__).resolve().parent.parent
 NOTES_DIR = ROOT / "astroBitesNotes" / "notes"
@@ -155,15 +156,6 @@ def write_tex(path: Path, title: str, cite_key: str | None, label: str) -> None:
 \\end{{list}}
 """
     path.write_text(content, encoding="utf-8")
-
-
-def open_in_editor(path: Path) -> None:
-    for cmd in (["cursor", "-r", str(path)], ["cursor", str(path)], ["code", "-r", str(path)]):
-        try:
-            subprocess.run(cmd, check=False, capture_output=True)
-            return
-        except FileNotFoundError:
-            continue
 
 
 def main() -> int:

@@ -1,0 +1,13 @@
+{
+  "Glossary entry": {
+    "prefix": "glossaryEntry",
+    "scope": "latex,tex",
+    "body": [
+      "\\newglossaryentry{${1:key}}{",
+      "name={${2:Display Name}},",
+      "description={${3:description}}",
+      "}"
+    ],
+    "description": "Same as global glossaryEntry snippet; prefer task New Glossary Entry"
+  }
+}

@@ -73,9 +73,19 @@ def register_input_line(input_file: Path, line: str) -> None:
 
 
 def open_in_editor(path: Path) -> None:
-    for cmd in (["cursor", "-r", str(path)], ["cursor", str(path)], ["code", "-r", str(path)]):
+    """Open path in Cursor/VS Code and focus the editor tab."""
+    path = path.resolve()
+    goto = f"{path}:1:1"
+    attempts = (
+        ["cursor", "-r", "-g", goto],
+        ["cursor", "-g", goto],
+        ["code", "-r", "-g", goto],
+        ["code", "-g", goto],
+    )
+    for cmd in attempts:
         try:
-            subprocess.run(cmd, check=False, capture_output=True)
-            return
+            result = subprocess.run(cmd, check=False, capture_output=True, text=True)
+            if result.returncode == 0:
+                return
         except FileNotFoundError:
             continue

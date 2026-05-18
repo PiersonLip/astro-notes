@@ -42,6 +42,24 @@
       "type": "promptString",
       "description": "DOI or arXiv URL (optional — fetches bib if key missing)",
       "placeholder": "10.1051/0004-6361/202453271"
+    },
+    {
+      "id": "glossaryKey",
+      "type": "promptString",
+      "description": "Glossary key (e.g. ac:GW, TDE — leave blank to derive from name)",
+      "placeholder": "ac:GW"
+    },
+    {
+      "id": "glossaryName",
+      "type": "promptString",
+      "description": "Display name",
+      "placeholder": "gravitational wave"
+    },
+    {
+      "id": "glossaryDescription",
+      "type": "promptString",
+      "description": "Description (use \\\\ for line breaks)",
+      "placeholder": "Gravitational Waves \\\\ See section"
     }
   ],
   "tasks": [
@@ -58,9 +76,10 @@
         "cwd": "${workspaceFolder}"
       },
       "presentation": {
-        "reveal": "always",
+        "reveal": "silent",
         "panel": "shared",
-        "focus": false
+        "focus": false,
+        "close": true
       },
       "problemMatcher": []
     },
@@ -78,11 +97,65 @@
         "cwd": "${workspaceFolder}"
       },
       "presentation": {
+        "reveal": "silent",
+        "panel": "shared",
+        "focus": false,
+        "close": true
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "New Glossary Entry",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/new-glossary.sh",
+      "args": [
+        "${input:glossaryKey}",
+        "${input:glossaryName}",
+        "${input:glossaryDescription}"
+      ],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
         "reveal": "always",
         "panel": "shared",
         "focus": false
       },
       "problemMatcher": []
+    },
+    {
+      "label": "Sort Glossary",
+      "type": "shell",
+      "command": "${workspaceFolder}/scripts/sort-glossary.sh",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared",
+        "focus": false
+      },
+      "problemMatcher": []
+    },
+    {
+      "label": "Build mainNotes (latexmk)",
+      "type": "shell",
+      "command": "latexmk",
+      "args": ["-pdf", "-interaction=nonstopmode", "mainNotes.tex"],
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared"
+      },
+      "problemMatcher": [
+        "$latex"
+      ]
     }
   ]
 }
