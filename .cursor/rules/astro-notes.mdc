@@ -27,8 +27,8 @@ Paper folder default: derived from cite key (`greenUpperLimitFrequency2025` → 
 
 ## Layout
 
-- **Papers:** `\documentclass[../../mainNotes.tex]{subfiles}` wrapper; `\chapter{Title \cite{key}}`, `\section{Abstract}`, bullet list. Main doc uses `\subfile{paperNotes/...}` via `paperNotes/paperIncludes.tex`.
-- **Standalone paper build:** `latexmk -pdf -shell-escape` on the chapter `.tex`, or task **Build Paper Subfile**.
+- **Papers:** `\chapter{Title \cite{key}}`, `\section{Abstract}`, bullet list; registered in `paperNotes/paperIncludes.tex` via `\input`. Files use `\ifdefined\AnMainDocument` so the same `.tex` compiles standalone (subfiles) or inside `mainNotes`.
+- **Standalone paper build:** task **Build Paper Subfile** or `latexmk -pdf -shell-escape` on the paper `.tex` from its folder.
 - **Astrobites:** `\chapter{Title \cite{key} \label{chap:...}}`, section “Abstract and intro”.
 
 ## Glossary (`subTex/Astro-glossary.tex`)
@@ -42,5 +42,6 @@ Paper folder default: derived from cite key (`greenUpperLimitFrequency2025` → 
 
 - Full doc: `latexmk -pdf -shell-escape mainNotes.tex` (tikz externalization, biblatex/biber).
 - Use **global** LaTeX Workshop settings; no workspace `settings.json` override here.
+- Chapters restart at 1 per `\part` via `\@addtoreset{chapter}{part}`; never `\setcounter{chapter}{0}` in included `.tex` files.
 
 More detail: `memory.md`.

@@ -190,8 +190,10 @@ def resolve_bib(
 
 def write_paper_tex(path: Path, title: str, cite_key: str) -> None:
     safe_title = latex_escape(title)
-    content = f"""\\documentclass[../../mainNotes.tex]{{subfiles}}
+    content = f"""\\ifdefined\\AnMainDocument\\else
+\\documentclass[../../mainNotes.tex]{{subfiles}}
 \\begin{{document}}
+\\fi
 
 \\pagebreak
 \\chapter{{{safe_title} \\cite{{{cite_key}}}}}
@@ -206,7 +208,9 @@ def write_paper_tex(path: Path, title: str, cite_key: str) -> None:
 \\item 
 \\end{{list}}
 
+\\ifdefined\\AnMainDocument\\else
 \\end{{document}}
+\\fi
 """
     path.write_text(content, encoding="utf-8")
 
@@ -297,8 +301,7 @@ def main() -> int:
 
     note_dir = PAPER_ROOT / folder
     tex_file = note_dir / tex_name
-    stem = tex_name[:-4] if tex_name.endswith(".tex") else tex_name
-    input_line = f"\\subfile{{paperNotes/{folder}/{stem}}}"
+    input_line = f"\\input{{paperNotes/{folder}/{tex_name}}}"
 
     if tex_file.exists():
         print(f"Already exists: {tex_file}", file=sys.stderr)

@@ -34,6 +34,8 @@ Paper task args: title, cite key, optional folder, optional DOI — empty folder
 
 **Paper subfiles:** each chapter is a `subfiles` child of `mainNotes.tex`. Compile one chapter alone: open its `.tex` and run **Build Paper Subfile** (or `latexmk -pdf -shell-escape` on that file) for synctex without rebuilding the whole book.
 
+**Chapter numbering:** `\@addtoreset{chapter}{part}` in `mainNotes.tex` restarts chapters at 1 for each part (Class, General, Papers, Astrobites, Physics). Do not use `\setcounter{chapter}{0}` in included files — that breaks PDF outlines.
+
 ## Layout conventions
 
 - **Astrobites:** `\chapter{Title \cite{key} \label{chap:...}}`, section “Abstract and intro”, bullet list.
