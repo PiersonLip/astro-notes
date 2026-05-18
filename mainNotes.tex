@@ -27,12 +27,13 @@
 \usepackage{fancyhdr}
 \usepackage{graphicx}
 \graphicspath{ {./figs/} }
+\usepackage{subfiles}
 \usepackage[
   backend=biber,
   sorting=none,
   % style=mla
 ]{biblatex}
-\addbibresource{sources.bib} 
+\addbibresource{sources.bib}
 \addbibresource{AstroNotes.bib}
 
 
@@ -223,8 +224,6 @@
 \makeglossaries 
 \loadglsentries{subTex/Astro-glossary} % no .tex extension
 
-
-
 \begin{document}
     \pagestyle{fancy}
 
@@ -247,7 +246,7 @@
 
 
 \part{Paper Notes}
-\input{paperNotes/paperNotes.tex}
+\input{paperNotes/paperIncludes.tex}
 
 \part{General Notes}
 \input{subTex/generalnotes.tex}

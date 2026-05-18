@@ -1,0 +1,8 @@
+% Copy to partial.tex (gitignored) for a faster full-document build while editing one part.
+% Use \include paths without .tex — same stems as in paperIncludes.tex.
+%
+% Example (paper chapter only; other \subfile parts are skipped):
+% \includeonly{paperNotes/greenUpper/greenUpperNotes}
+%
+% Note: \includeonly works with \include, not \subfile. For day-to-day paper editing,
+% prefer compiling the chapter .tex directly (task: Build Paper Subfile).
