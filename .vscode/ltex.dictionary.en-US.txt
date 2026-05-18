@@ -25,3 +25,5 @@ Tullio
 Regge-Wheeler
 Schwarzschild
 HSEq
+Collapsers
+GrBs
