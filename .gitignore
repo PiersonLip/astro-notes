@@ -15,6 +15,7 @@ Thomas M. Tauris, Edward P.J. van den Heuvel - Physics of Binary Star Evolution-
 *.fdb_latexmk
 *.bbl-SAVE-ERROR
 partial.tex
+.vscode/last-created-path
 *.bcf
 *.xml
 *.fls

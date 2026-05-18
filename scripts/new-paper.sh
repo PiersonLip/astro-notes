@@ -18,4 +18,5 @@ if [[ -n "${doi// }" ]]; then
   args+=(--doi "$doi")
 fi
 
-exec python3 "$PY" "${args[@]}"
+python3 "$PY" "${args[@]}"
+exec "$ROOT/scripts/focus-last-created.sh"

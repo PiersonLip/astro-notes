@@ -9,6 +9,7 @@ import sys
 from pathlib import Path
 
 from glossary_utils import entry_exists, format_entry, sort_glossary_file
+from note_utils import open_in_editor
 
 ROOT = Path(__file__).resolve().parent.parent
 GLOSSARY_FILE = ROOT / "subTex" / "Astro-glossary.tex"
@@ -69,6 +70,7 @@ def main() -> int:
     if changed:
         print(sort_msg)
 
+    open_in_editor(GLOSSARY_FILE)
     return 0
 
 

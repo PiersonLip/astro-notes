@@ -2,9 +2,12 @@
 
 from __future__ import annotations
 
+import os
 import re
 import subprocess
 from pathlib import Path
+
+LAST_CREATED_PATH = Path(__file__).resolve().parent.parent / ".vscode" / "last-created-path"
 
 SMALL_WORDS = {"a", "an", "the", "of", "in", "on", "at", "to", "for", "and", "or"}
 BIB_KEY = re.compile(r"@\w+\{([^,]+),")
@@ -94,20 +97,41 @@ def register_input_line(input_file: Path, line: str) -> None:
         f.write(line + "\n")
 
 
+def write_last_created(path: Path) -> None:
+    """Record path for tasks/fallback open (see .vscode/tasks.json)."""
+    path = path.resolve()
+    LAST_CREATED_PATH.parent.mkdir(parents=True, exist_ok=True)
+    LAST_CREATED_PATH.write_text(str(path) + "\n", encoding="utf-8")
+
+
 def open_in_editor(path: Path) -> None:
     """Open path in Cursor/VS Code and focus the editor tab."""
     path = path.resolve()
+    write_last_created(path)
     goto = f"{path}:1:1"
-    attempts = (
-        ["cursor", "-r", "-g", goto],
-        ["cursor", "-g", goto],
-        ["code", "-r", "-g", goto],
-        ["code", "-g", goto],
+
+    hook = os.environ.get("VSCODE_IPC_HOOK_CLI") or os.environ.get("CODE_IPC_HOOK_CLI")
+    commands: list[list[str]] = []
+    if hook:
+        commands.append([hook, "-r", "-g", goto])
+    commands.extend(
+        [
+            ["cursor", "-r", "-g", goto],
+            ["cursor", "-g", goto],
+            ["code", "-r", "-g", goto],
+            ["code", "-g", goto],
+        ]
     )
-    for cmd in attempts:
+    for cmd in commands:
         try:
-            result = subprocess.run(cmd, check=False, capture_output=True, text=True)
-            if result.returncode == 0:
-                return
+            subprocess.Popen(
+                cmd,
+                stdout=subprocess.DEVNULL,
+                stderr=subprocess.DEVNULL,
+                start_new_session=True,
+            )
+            print(f"Open: {path}")
+            return
         except FileNotFoundError:
             continue
+    print(f"Open: {path}  (install Cursor/VS Code shell command to focus automatically)")

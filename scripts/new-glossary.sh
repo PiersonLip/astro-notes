@@ -2,4 +2,5 @@
 # Usage: new-glossary.sh [key] [name] [description]
 set -euo pipefail
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-exec python3 "$ROOT/scripts/new-glossary.py" "$@"
+python3 "$ROOT/scripts/new-glossary.py" "$@"
+exec "$ROOT/scripts/focus-last-created.sh"

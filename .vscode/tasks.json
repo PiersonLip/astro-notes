@@ -73,7 +73,11 @@
         "${input:astrobiteAuthor}"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSCODE_IPC_HOOK_CLI": "${env:VSCODE_IPC_HOOK_CLI}",
+          "CODE_IPC_HOOK_CLI": "${env:CODE_IPC_HOOK_CLI}"
+        }
       },
       "presentation": {
         "reveal": "silent",
@@ -81,7 +85,16 @@
         "focus": false,
         "close": true
       },
-      "problemMatcher": []
+      "problemMatcher": [
+        {
+          "owner": "astro-notes",
+          "fileLocation": ["absolute"],
+          "pattern": {
+            "regexp": "^Open: (.+)$",
+            "file": 1
+          }
+        }
+      ]
     },
     {
       "label": "New Paper Note (from Zotero)",
@@ -93,15 +106,28 @@
         "${input:paperDoi}"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSCODE_IPC_HOOK_CLI": "${env:VSCODE_IPC_HOOK_CLI}",
+          "CODE_IPC_HOOK_CLI": "${env:CODE_IPC_HOOK_CLI}"
+        }
       },
       "presentation": {
-        "reveal": "always",
+        "reveal": "silent",
         "panel": "shared",
         "focus": false,
         "close": true
       },
-      "problemMatcher": []
+      "problemMatcher": [
+        {
+          "owner": "astro-notes",
+          "fileLocation": ["absolute"],
+          "pattern": {
+            "regexp": "^Open: (.+)$",
+            "file": 1
+          }
+        }
+      ]
     },
     {
       "label": "New Paper Note",
@@ -114,7 +140,11 @@
         "${input:paperDoi}"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSCODE_IPC_HOOK_CLI": "${env:VSCODE_IPC_HOOK_CLI}",
+          "CODE_IPC_HOOK_CLI": "${env:CODE_IPC_HOOK_CLI}"
+        }
       },
       "presentation": {
         "reveal": "silent",
@@ -122,7 +152,16 @@
         "focus": false,
         "close": true
       },
-      "problemMatcher": []
+      "problemMatcher": [
+        {
+          "owner": "astro-notes",
+          "fileLocation": ["absolute"],
+          "pattern": {
+            "regexp": "^Open: (.+)$",
+            "file": 1
+          }
+        }
+      ]
     },
     {
       "label": "New Glossary Entry",
@@ -134,14 +173,28 @@
         "${input:glossaryDescription}"
       ],
       "options": {
-        "cwd": "${workspaceFolder}"
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "VSCODE_IPC_HOOK_CLI": "${env:VSCODE_IPC_HOOK_CLI}",
+          "CODE_IPC_HOOK_CLI": "${env:CODE_IPC_HOOK_CLI}"
+        }
       },
       "presentation": {
-        "reveal": "always",
+        "reveal": "silent",
         "panel": "shared",
-        "focus": false
+        "focus": false,
+        "close": true
       },
-      "problemMatcher": []
+      "problemMatcher": [
+        {
+          "owner": "astro-notes",
+          "fileLocation": ["absolute"],
+          "pattern": {
+            "regexp": "^Open: (.+)$",
+            "file": 1
+          }
+        }
+      ]
     },
     {
       "label": "Sort Glossary",
