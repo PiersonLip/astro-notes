@@ -32,10 +32,6 @@ ACRONYM_RENAMES: dict[str, str] = {
     "WNh": "ac:WNh",
     "WR-star": "ac:WR-star",
     "ZAMS": "ac:ZAMS",
-    "Case-A-RLO": "ac:Case-A-RLO",
-    "Case-B-RLO": "ac:Case-B-RLO",
-    "odd_modes": "ac:odd-modes",
-    "even_modes": "ac:even-modes",
 }
 
 REMOVE_KEYS = {"someBS"}
